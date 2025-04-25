@@ -2,38 +2,34 @@ name: Laravel CI/CD
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  laravel-tests:
+  build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      - name: Setup PHP
+      - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.2
+          php-version: '8.2'
           extensions: mbstring, bcmath, sqlite
-          coverage: none
 
-      - name: Install dependencies
+      - name: Install Composer dependencies
+        working-directory: ./laravel-ci-cd-tutorial/laravel-ci-cd  # Correct directory where composer.json is located
         run: composer install --no-progress --prefer-dist
 
-      - name: Generate application key
+      - name: Generate Laravel application key
+        working-directory: ./laravel-ci-cd-tutorial/laravel-ci-cd  # Correct directory
         run: php artisan key:generate
 
-      - name: Run tests
+      - name: Run Tests
+        working-directory: ./laravel-ci-cd-tutorial/laravel-ci-cd  # Correct directory
         run: php artisan test
 
-  deploy:
-    needs: laravel-tests
-    runs-on: ubuntu-latest
-    if: success()
-
-    steps:
-      - name: Simulate deployment
-        run: echo "Deploying Laravel app to production..."
+      - name: Simulate deployment (or replace with real steps)
+        run: echo "Deploying Laravel app..."
