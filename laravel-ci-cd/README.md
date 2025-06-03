@@ -4,10 +4,10 @@
 
 ### 📌 What you’ll do:
 
-1. Create a new Laravel app  
-2. Set up Git and push to GitHub  
-3. Create a GitHub Actions workflow  
-4. Run tests (pass & fail) automatically on push (CI)  
+1. Create a new Laravel app
+2. Set up Git and push to GitHub
+3. Create a GitHub Actions workflow
+4. Run tests (pass & fail) automatically on push (CI)
 5. Simulate deployment if tests pass (CD)
 
 ---
@@ -18,11 +18,11 @@
 
 ### ✅ Prerequisites
 
-- PHP >= 8.1  
-- Composer  
-- Git  
-- Laravel installer (`composer global require laravel/installer`)  
-- MySQL or SQLite (optional for testing)
+-   PHP >= 8.1
+-   Composer
+-   Git
+-   Laravel installer (`composer global require laravel/installer`)
+-   MySQL or SQLite (optional for testing)
 
 ---
 
@@ -97,42 +97,42 @@ touch .github/workflows/ci-cd.yml
 name: Laravel CI/CD
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    push:
+        branches:
+            - main
 
 jobs:
-  laravel-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    build:
+        runs-on: ubuntu-latest
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.2
-          extensions: mbstring, bcmath, sqlite
-          coverage: none
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
 
-      - name: Install dependencies
-        run: composer install --no-progress --prefer-dist
+            - name: Set up PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "8.2"
+                  extensions: mbstring, bcmath, sqlite
 
-      - name: Generate application key
-        run: php artisan key:generate
+            - name: Install Composer dependencies
+              working-directory: ./laravel-ci-cd
+              run: composer install --no-progress --prefer-dist
 
-      - name: Run tests
-        run: php artisan test
+            - name: Copy .env file
+              working-directory: ./laravel-ci-cd
+              run: cp .env.example .env
 
-  deploy:
-    needs: laravel-tests
-    runs-on: ubuntu-latest
-    if: success()
+            - name: Generate Laravel application key
+              working-directory: ./laravel-ci-cd
+              run: php artisan key:generate
 
-    steps:
-      - name: Simulate deployment
-        run: echo "Deploying Laravel app to production..."
+            - name: Run Tests
+              working-directory: ./laravel-ci-cd
+              run: php artisan test
+
+            - name: Simulate deployment
+              run: echo "Deploying Laravel app..."
 ```
 
 ✅ This sets up PHP, installs Laravel dependencies, runs the default tests, and then simulates deployment.
@@ -145,14 +145,14 @@ jobs:
 
 ### ✅ Case A: All tests pass
 
-- Push code to GitHub:
-  ```bash
-  git add .
-  git commit -m "Test CI passing"
-  git push
-  ```
-- Go to GitHub → Actions tab → see the workflow run
-- You'll see ✅ all tests pass and deployment message
+-   Push code to GitHub:
+    ```bash
+    git add .
+    git commit -m "Test CI passing"
+    git push
+    ```
+-   Go to GitHub → Actions tab → see the workflow run
+-   You'll see ✅ all tests pass and deployment message
 
 ---
 
@@ -175,8 +175,8 @@ git commit -m "Add failing test"
 git push
 ```
 
-- Go to GitHub → Actions tab
-- ❌ You’ll see the workflow fails on `Run tests`, and **deployment won’t run**
+-   Go to GitHub → Actions tab
+-   ❌ You’ll see the workflow fails on `Run tests`, and **deployment won’t run**
 
 ---
 
@@ -202,6 +202,6 @@ git push
 
 ## 🎉 Bonus: Laravel-Specific Tips
 
-- Use `.env.testing` to configure test DB (e.g., SQLite)
-- Add PHPStan, Pint, or PHPUnit reports to your workflow
-- You can SSH and deploy to a real server later using `scp` or `rsync`
+-   Use `.env.testing` to configure test DB (e.g., SQLite)
+-   Add PHPStan, Pint, or PHPUnit reports to your workflow
+-   You can SSH and deploy to a real server later using `scp` or `rsync`
