@@ -10,32 +10,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Set up PHP environment
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: "8.2"
           extensions: mbstring, bcmath, sqlite
 
-      # Install Composer dependencies
       - name: Install Composer dependencies
-        working-directory: ./laravel-ci-cd-tutorial/laravel-ci-cd  # Correct directory where composer.json is located
+        working-directory: ./laravel-ci-cd
         run: composer install --no-progress --prefer-dist
 
-      # Generate Laravel application key
       - name: Generate Laravel application key
-        working-directory: ./laravel-ci-cd-tutorial/laravel-ci-cd  # Same folder
+        working-directory: ./laravel-ci-cd
         run: php artisan key:generate
 
-      # Run tests with Artisan
       - name: Run Tests
-        working-directory: ./laravel-ci-cd-tutorial/laravel-ci-cd  # Same folder
+        working-directory: ./laravel-ci-cd
         run: php artisan test
 
-      # Simulate deployment (can be replaced with actual deployment commands) 
-      - name: Simulate deployment (or replace with real steps)
+      - name: Simulate deployment
         run: echo "Deploying Laravel app..."
