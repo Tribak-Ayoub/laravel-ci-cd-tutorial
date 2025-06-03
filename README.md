@@ -1,5 +1,4 @@
 
-```markdown
 # 🚀 Laravel CI/CD Pipeline with GitHub Actions
 
 This repository demonstrates a simple **CI/CD pipeline** for a Laravel application using **GitHub Actions**.
