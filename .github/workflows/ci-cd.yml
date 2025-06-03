@@ -36,6 +36,6 @@ jobs:
         working-directory: ./laravel-ci-cd-tutorial/laravel-ci-cd  # Same folder
         run: php artisan test
 
-      # Simulate deployment (can be replaced with actual deployment commands)
+      # Simulate deployment (can be replaced with actual deployment commands) 
       - name: Simulate deployment (or replace with real steps)
         run: echo "Deploying Laravel app..."
