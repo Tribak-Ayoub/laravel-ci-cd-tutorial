@@ -23,6 +23,10 @@ jobs:
         working-directory: ./laravel-ci-cd
         run: composer install --no-progress --prefer-dist
 
+      - name: Copy .env file
+        working-directory: ./laravel-ci-cd
+        run: cp .env.example .env
+
       - name: Generate Laravel application key
         working-directory: ./laravel-ci-cd
         run: php artisan key:generate
